@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>history</title>
+</head>
+<body>
+    <h2>Your Upload History</h2>
+
+<ul>
+    <% if (uploads && uploads.length > 0) { %>
+    <% uploads.forEach(upload => { %>
+        <li>
+        <strong><%= upload.originalName %></strong> -
+        <%= new Date(upload.uploadedAt).toLocaleString() %>
+        <form action="/view-chart" method="POST" style="display:inline;">
+            <input type="hidden" name="id" value="<%= upload._id %>" />
+            <button>View Charts</button>
+        </form>
+    </li>
+    <% }) %>
+<% } else { %>
+    <li>No uploads found.</li>
+<% } %>
+</ul>
+
+
+</body>
+</html>

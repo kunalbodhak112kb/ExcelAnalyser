@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard | ExcelAnalyser</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      color: #333;
+      display: flex;
+      height: 100vh;
+    }
+
+    .sidebar {
+      width: 220px;
+      background-color: rgba(255, 255, 255, 0.9);
+      padding-top: 20px;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 12px 20px;
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      transition: background 0.3s ease;
+    }
+
+    .sidebar a:hover {
+      background-color: #e0e0e0;
+    }
+
+    .main-content {
+      flex-grow: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logout-btn {
+      padding: 8px 16px;
+      background-color: crimson;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background-color: darkred;
+    }
+
+    .welcome {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 20px 0;
+    }
+
+    .stats {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 20px;
+      flex: 1;
+      min-width: 200px;
+      text-align: center;
+    }
+
+    .card h3 {
+      margin: 0;
+      font-size: 18px;
+      color: #555;
+    }
+
+    .card p {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 10px 0 0 0;
+      color: #222;
+    }
+
+    .chart-section {
+      margin-top: 30px;
+    }
+
+    .recent-uploads {
+      margin-top: 40px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      background: #f0f0f0;
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .stats {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/upload">Upload Excel</a>
+    <a href="/analyze">Analyze Excel</a>
+    <a href="/history">History</a>
+    <% if (role === "admin") { %>
+      <a href="/admin"><strong>🛠 Admin Panel</strong></a>
+    <% } %>
+  </div>
+
+  <div class="main-content">
+    <div class="topbar">
+      <div class="logo"><strong>ExcelAnalyser Dashboard</strong></div>
+      <form action="/logout" method="POST">
+        <button type="submit" class="logout-btn">Logout</button>
+      </form>
+    </div>
+
+    <div class="welcome">👋 Welcome <%= user ? user.username : "User" %>!</div>
+
+    <!-- Dashboard Summary -->
+    <div class="stats">
+      <div class="card">
+        <h3>Total Uploads</h3>
+        <p><%= user.uploadCount || 0 %></p>
+      </div>
+      <div class="card">
+        <h3>User Role</h3>
+        <p><%= user.role %></p>
+      </div>
+      <div class="card">
+        <h3>Last Login</h3>
+        <p><%= user.lastLogin ? user.lastLogin.toDateString() : "N/A" %></p>
+      </div>
+    </div>
+
+    <!-- Chart Placeholder -->
+    <div class="chart-section">
+      <h2>📊 Upload Insights</h2>
+      <canvas id="uploadChart" width="400" height="200"></canvas>
+    </div>
+
+    <!-- Recent Uploads -->
+    <div class="recent-uploads">
+      <h2>📁 Recent Uploads</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Filename</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (user.uploads && user.uploads.length > 0) { %>
+            <% user.uploads.slice(0, 5).forEach(function(upload) { %>
+              <tr>
+                <td><%= upload.originalName %></td>
+                <td><%= new Date(upload.uploadedAt).toLocaleDateString() %></td>
+              </tr>
+            <% }) %>
+          <% } else { %>
+            <tr><td colspan="2">No uploads yet.</td></tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const ctx = document.getElementById('uploadChart').getContext('2d');
+    const uploadChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+        datasets: [{
+          label: 'Uploads',
+          data: [2, 4, 3, 5], // Replace with real dynamic values if needed
+          backgroundColor: 'rgba(255, 99, 132, 0.7)',
+          borderRadius: 5
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

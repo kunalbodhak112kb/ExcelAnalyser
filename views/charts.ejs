@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Excel Charts</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    canvas {
+      margin-bottom: 40px;
+      max-width: 800px;
+      max-height: 400px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Charts from Excel</h2>
+
+  <canvas id="barChart"></canvas>
+  <canvas id="pieChart"></canvas>
+  <canvas id="scatterChart"></canvas>
+
+  <script>
+    const data = <%- JSON.stringify(data) %>;
+
+    const keys = Object.keys(data[0]).filter(key => typeof data[0][key] === 'number');
+
+    function getRandomColors(count) {
+      return Array.from({ length: count }, () => `hsl(${Math.random() * 360}, 70%, 60%)`);
+    }
+
+    // Bar Chart
+    if (keys.length >= 2) {
+      const xKey = keys[0];
+      const yKey = keys[1];
+
+      const labels = data.map(row => row[xKey]);
+      const values = data.map(row => row[yKey]);
+
+      new Chart(document.getElementById("barChart"), {
+        type: "bar",
+        data: {
+          labels,
+          datasets: [{
+            label: `${yKey} vs ${xKey}`,
+            data: values,
+            backgroundColor: getRandomColors(values.length)
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: true } }
+        }
+      });
+    }
+
+    // Pie Chart (on 3rd key)
+    if (keys.length >= 3) {
+      const groupKey = keys[2];
+      const groupMap = {};
+      data.forEach(row => {
+        groupMap[row[groupKey]] = (groupMap[row[groupKey]] || 0) + 1;
+      });
+      const pieLabels = Object.keys(groupMap);
+      const pieData = Object.values(groupMap);
+      const pieColors = getRandomColors(pieData.length);
+
+      new Chart(document.getElementById("pieChart"), {
+        type: "pie",
+        data: {
+          labels: pieLabels,
+          datasets: [{
+            label: `Distribution of ${groupKey}`,
+            data: pieData,
+            backgroundColor: pieColors
+          }]
+        },
+        options: {
+          responsive: true
+        }
+      });
+    }
+
+    // Scatter/Line Chart (first 2 numeric keys)
+    if (keys.length >= 2) {
+      const xKey = keys[0];
+      const yKey = keys[1];
+      const points = data.map(row => ({ x: row[xKey], y: row[yKey] }));
+
+      new Chart(document.getElementById("scatterChart"), {
+        type: "line",
+        data: {
+          datasets: [{
+            label: `${yKey} over ${xKey}`,
+            data: points,
+            backgroundColor: "rgba(75, 192, 192, 0.6)",
+            borderColor: "rgba(75, 192, 192, 1)",
+            fill: false
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: {
+              type: 'linear',
+              title: { display: true, text: xKey }
+            },
+            y: {
+              title: { display: true, text: yKey }
+            }
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Welcome | ExcelAnalyser</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.1);
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn {
+      padding: 0.6rem 1.5rem;
+      margin: 0 0.5rem;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      background: #ffffff;
+      color: #333;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background: #e6e6e6;
+    }
+
+    .swiper {
+      width: 90%;
+      max-width: 1200px;
+      height: 320px;
+      margin: 2rem auto;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .swiper-slide {
+      position: relative;
+    }
+
+    .swiper-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .swiper-slide img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      font-size: 1rem;
+      padding: 0.5rem;
+      text-align: center;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
+
+    .content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      font-size: 1.2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    footer {
+      padding: 1rem;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.1);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .swiper {
+        height: auto;
+      }
+
+      .swiper-slide img {
+        height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo">ExcelAnalyser</div>
+    <div>
+      <a href="/login" class="btn">Login</a>
+      <a href="/register" class="btn">Register</a>
+    </div>
+  </header>
+
+  <!-- Swiper Carousel -->
+  <div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+
+      <div class="swiper-slide">
+        <img src="https://i.ibb.co/hRpR2KYz/89e69c33-d25a-4430-83cd-2e932d6d4d1f.jpg" alt="Dashboard Chart 1" />
+        <div class="caption">Interactive Bar & Line Chart</div>
+      </div>
+
+      <div class="swiper-slide">
+        <img src="https://i.ibb.co/cKxyPL5y/image-2.jpg" alt="Dashboard Chart 2" />
+        <div class="caption">Dark Mode Pie Visualization</div>
+      </div>
+
+      <div class="swiper-slide">
+        <img src="https://i.ibb.co/2HW13nb/image-1.jpg" alt="Dashboard Chart 3" />
+        <div class="caption">Multiple Chart Dashboard View</div>
+      </div>
+
+    </div>
+
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-pagination"></div>
+  </div>
+
+  <!-- Welcome Content -->
+  <div class="content">
+    <h1>Welcome to ExcelAnalyser</h1>
+    <p>
+      Upload Excel files, generate interactive charts, and manage your data effortlessly.
+      With secure login, role-based access, and an intuitive UI — ExcelAnalyser empowers your insights.
+    </p>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    &copy; <%= new Date().getFullYear() %> ExcelAnalyser 
+  </footer>
+
+  <!-- Swiper JS -->
+  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  <script>
+    const swiper = new Swiper('.mySwiper', {
+      loop: true,
+      grabCursor: true,
+      spaceBetween: 20,
+      speed: 600,
+      autoplay: {
+        delay: 3500,
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      breakpoints: {
+        640: { slidesPerView: 1 },
+        768: { slidesPerView: 2 },
+        1024: { slidesPerView: 3 }
+      }
+    });
+  </script>
+</body>
+</html>

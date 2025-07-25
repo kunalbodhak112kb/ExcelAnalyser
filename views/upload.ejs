@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Upload Excel | ExcelAnalyser</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #4facfe, #00f2fe);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    header {
+      width: 100%;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.1);
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      background: #fff;
+      color: #333;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    .nav-link:hover {
+      background: #e6e6e6;
+    }
+
+    h3 {
+      font-size: 2rem;
+      margin: 2rem 0 1rem 0;
+      text-align: center;
+    }
+
+    form {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    input[type="file"] {
+      padding: 0.8rem;
+      margin-bottom: 1rem;
+      border-radius: 5px;
+      background-color: #fff;
+      color: #333;
+      width: 100%;
+    }
+
+    button {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 5px;
+      background: #ffffff;
+      color: #333;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #e6e6e6;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">ExcelAnalyser</div>
+    <a href="/dashboard" class="nav-link">Back to Dashboard</a>
+  </header>
+
+  <h3>📁 Upload an Excel File</h3>
+  <form action="/chart" method="POST" enctype="multipart/form-data">
+    <input type="file" name="excel" accept=".xlsx, .xls" required />
+    <button type="submit">Generate Charts</button>
+  </form>
+</body>
+</html>

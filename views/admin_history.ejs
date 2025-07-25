@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin - Upload History</title>
+    <style>
+    body { font-family: Arial; padding: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h2>📄 All User Upload History (Admin)</h2>
+   
+
+    <% if (uploads.length === 0) { %>
+    <p>No uploads found.</p>
+    <% } else { %>
+    <table>
+        <thead>
+        <tr>
+            <th>Username</th>
+            <th>Original File Name</th>
+            <th>Uploaded At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% uploads.forEach(upload => { %>
+            <tr>
+            <td><%= upload.userId?.username || "Unknown User" %></td>
+            <td><%= upload.originalName %></td>
+            <td><%= new Date(upload.uploadedAt).toLocaleString() %></td>
+            <td>
+                <form method="POST" action="/view-chart" style="display:inline;">
+                <input type="hidden" name="id" value="<%= upload._id %>" />
+                <button type="submit">View Chart</button>
+            </form>
+            </td>
+        </tr>
+        <% }) %>
+    </tbody>
+    </table>
+    <% } %>
+</body>
+</html>
